@@ -3,91 +3,115 @@ class Stack:
         self.items=[]
     def push(self,val):
         self.items.append(val)
-        return self.items
     def pop(self):
         try:
             return self.items.pop()
         except IndexError:
-            print('Stack is Empty')
+            print('Stack is empty')
     def top(self):
         try:
             return self.items[-1]
         except IndexError:
             print('Stack is empty')
-    def len_stack(self):
-        return len(self)
+    def __len__(self):
+        return len(self.items)
     def isEmpty(self):
         return len(self)==0
+    
+# tokenisation
 
-# tokenization
-def get_token_list(expr):
-    temp=[]
-    result=[]
-    num=str()
-    for i in expr:
-        if i=='*' or i=='/' or i=='+' or i=='-' or i=='^' or i=='(' or i==')':
-            for j in temp:
-                num+=j
-            if num!='':
-                result.append(float(num))
-            result.append(i)
-            temp=[]
-            num=''
-        else:
-            temp.append(i)
-    for k in temp:
-        num+=k
-    result.append(float(num))
-    return result
-      
-# infix_to_postfix
-def infix_to_postfix(token_list,opStack,outStack):
-    for i in token_list:
-        if i=='*' or i=='/' or i=='(':
-            opStack.push(i)
-        elif i=='+' or i=='-':
-            if opStack.len_stack()==0:
-                opStack.push(i)
-            else:
-                while(opStack.len_stack()):
-                    if opStack.top()=='*' or opStack.top()=='/':
-                        outStack.append(opStack.top())
-                        opStack.pop()
-                    opStack.push(i)
+def tokenisation(expr):
+    tokens=[]
+    valprocessing=False # whether is number or not. number-True
+    value=0
+    
+    for val in expr:
+        if val==" ":   # examining blank
+            continue
+        
+        if val in '0123456789': # when val is number
+            value=value*10+int(val)
+            valprocessing=True
+        else: # when val is not number
+            if valprocessing==True:
+                tokens.append(value)
+                value=0 
+            valprocessing=False
+            tokens.append(val)
             
-        elif i==')':
-            while(opStack.top()!='('):
-                outStack.append(opStack.top())
-                opStack.pop()
-            opStack.pop()
+    if valprocessing:
+        tokens.append(value)
+    return tokens
+
+#infix to postfix
+
+def infix_postfix(token_list):
+    prio={
+        '*':3,
+        '/':3,
+        '+':2,
+        '-':2,
+        '(':1
+    }
+    
+    opstack=Stack()
+    outstack=[]
+    
+    for token in token_list:
+        if type(token) is int:
+            outstack.append(token)
+        elif token==')':
+            while opstack.top()!='(':
+                outstack.append(opstack.pop())
+            opstack.pop()
         else:
-            outStack.append(i)
-    while(opStack.len_stack()!=0):
-        outStack.append(opStack.top())
-        opStack.pop()
+            if opstack.isEmpty()==0:
+                opstack.push(token)
+            else:
+                while len(opstack)>0:
+                    if prio[opstack.top()]>=prio[token]:
+                        outstack.append(opstack.pop())
+                    else:
+                        break
+                opstack.push(token)
+                
+    while not opstack.isEmpty():
+        outstack.append(opstack.pop())
+    
+    return outstack
+
+# computation
+
+def computation(token_list):
+    intstack=Stack()
+    
+    for token in token_list:
+        if type(token)==int:
+            intstack.push(token)
+         
+        elif token=='*':
+            token_a=intstack.pop()
+            token_b=intstack.pop()
+            intstack.push(token_b*token_a)
+        
+        elif token=='/':
+            token_a=intstack.pop()
+            token_b=intstack.pop()
+            intstack.push(token_b/token_a)
+            
+        elif token=='+':
+            token_a=intstack.pop()
+            token_b=intstack.pop()
+            intstack.push(token_b+token_a)   
+         
+        elif token=='-':
+            token_a=intstack.pop()
+            token_b=intstack.pop()
+            intstack.push(token_b-token_a)
+            
+    return intstack.pop()
+
+
+                    
             
                 
-            
-# computation
-def compute_profix(outStack):
-    s=Stack()
-    for i in outStack:
-        if (i!='+' or i!='-' or i!='*' or i!='/' or i!='^'):
-            s.push(i)
-        else:
-            operand1=s.top()
-            s.pop()
-            operand2=s.top()
-            s.pop()
-            if (i=='+'):
-                s.push(operand2+operand1)
-            elif(i=='-'):
-                s.push(operand2-operand1)
-            elif(i=='*'):
-                s.push(operand2*operand1)
-            elif(i=='/'):
-                s.push(operand2/operand1)
-    return s.top()
-
-a='2+3*5'
-print(get_token_list(a))           
