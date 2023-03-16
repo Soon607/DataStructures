@@ -1,45 +1,38 @@
+max_size=int(input('max size is:'))
 class CircleQueue:
-    rear=0
-    front=0
-    max_size=100
-    queue=list()
-    
     def __init__(self):
-        self.rear=0
         self.front=0
-        self.queue=[0 for i in range(self.max_size)]
-    # Empty Circular Queue
-    def is_empty(self):
-        if self.rear==self.front:
+        self.rear=0
+        self.queue=[None]*max_size
+        
+    def isEmpty(self):
+        if self.front==self.rear:
             return True
         else:
-            return None
-    # Full Circular Queue   
-    def is_full(self):
-        if (self.rear+1)%self.max_size==self.front:
-            return True
-        return False
-    # Enque
-    def enqueue(self,x):
-        if self.is_full():
-            print('Error:Full')
-        self.rear=(self.rear+1)%(self.max_size)
-        self.queue[self.rear]=x
-    # dequeue
+            return False
+    
+    def isFull(self):
+        if (self.rear+1)%max_size==self.front:
+            print('Queue is full')
+    
+    def enqueue(self,val):
+        if not self.isFull():
+            self.rear=(self.rear+1)%max_size
+            self.queue[self.rear]=val
+            
     def dequeue(self):
-        if self.is_empty():
-            print('Error: Empty')
-            return
-        self.front=(self.front+1)%self.max_size
-        return self.queue[self.front]
-    # print dequeue
-    def deque_print(self):
-        i=self.front #0
-        if self.is_empty():
-            print('Empty Queue')
-        while True:
-            i=(i+1)%self.max_size
-            print(self.queue[i],' ')
-            if i==self.rear or i!=self.front:
-                break
-a=CircleQueue()
+        if not self.isEmpty():
+            self.front=(self.front+1)%max_size
+            return self.queue[self.front]
+        
+    def peek(self):
+        if not self.isEmpty():
+            return self.queue[(self.front+1)%max_size]
+
+circle=CircleQueue()
+circle.enqueue(1)
+circle.enqueue(2)
+circle.enqueue(3)
+print(circle.queue)
+#print(circle.dequeue())
+print(circle.peek())
