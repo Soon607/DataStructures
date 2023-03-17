@@ -15,7 +15,7 @@ class SinglyLinkedList:
         s=""
         v=self.head # setting key value
         while v:
-            s+=str(v.key)
+            s+=str(v)
             v=v.next
         s+='None'
         return s
