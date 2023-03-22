@@ -68,7 +68,7 @@ class DoublyLinkedList:
     # serach
     def serach(self,key):
         v=self.head
-        while v.next!=self.haed:
+        while v.next!=self.head:
             if v.key==key:
                 return v
             v=v.next
