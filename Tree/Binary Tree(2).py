@@ -76,7 +76,7 @@ class BinaryTree:
                 self.root=self.root.left
             # has both child nodes
             else:
-                self.root.key=self._remove_most(self.root.right)
+                self.root.key=self._most_left(self.root.right)
         else:
             if self.root.key>item:
                 self._remove(self.root,self.root.left,item)
@@ -111,7 +111,7 @@ class BinaryTree:
                     parent.right=cur.left
             # has both child nodes
             if cur.left!=None and cur.right!=None:
-                cur.key=self._remove_most(cur.right).key
+                cur.key=self._most_left(cur.right).key
                 self._removeitem(cur,cur.right,cur.key)
             
         else:
@@ -120,14 +120,14 @@ class BinaryTree:
             else:
                 self._remove(cur,cur.right,item)
                 
-    #
-    def _remove_most(self,cur):
+    # finds the leftmost child node of the righ child node
+    def _most_left(self,cur):
         if cur.left==None:
             return cur
         else:
-            return self._remove_most(cur.left)
+            return self._most_left(cur.left)
             
-    #
+    # when has both child, remove and move the leftmost child
     def _removeitem(self,parent,cur,item):
         if cur.key==item:
             if parent.left==cur:
