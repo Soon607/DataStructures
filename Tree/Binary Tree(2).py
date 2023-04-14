@@ -61,7 +61,7 @@ class BinaryTree:
                 if cur.right is not None:
                     return self._search_node(cur.right,item)
                 else:
-                    False
+                    return False
                     
     # delete function
     def remove(self,item):
@@ -135,7 +135,7 @@ class BinaryTree:
             else:
                 parent.right=None
         else:
-            if cur.val>item:
+            if cur.key>item:
                 self._removeitem(cur,cur.left,item)
             else:
                 self._removeitem(cur,cur.right,item)
