@@ -28,11 +28,22 @@ class CircleQueue:
     def peek(self):
         if not self.isEmpty():
             return self.queue[(self.front+1)%max_size]
+    
+    def dequeue_print(self):
+        i=self.front
+        if self.isEmpty():
+            print('Empty Queue')
+            return
+        while True:
+            i=(i+1)%max_size
+            print(self.queue[i],' ')
+            if i==self.rear or i==self.front:
+                break
 
 circle=CircleQueue()
 circle.enqueue(1)
 circle.enqueue(2)
 circle.enqueue(3)
+circle.enqueue(4)
 print(circle.queue)
-#print(circle.dequeue())
-print(circle.peek())
+circle.dequeue_print()

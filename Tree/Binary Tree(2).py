@@ -25,7 +25,7 @@ class BinaryTree:
             self._add_node(self.root,item)
             
     def _add_node(self,parent,item):
-        print('parent:',parent.key,'child',item)
+        print('parent:',parent.key,'child:',item)
         # if root(parent)>item, locate at the left child
         if parent.key>item:
             if parent.left is not None:
@@ -111,7 +111,7 @@ class BinaryTree:
                     parent.right=cur.left
             # has both child nodes
             if cur.left!=None and cur.right!=None:
-                cur.key=self._most_left(cur.right).key
+                cur.key=self._most_left(cur.right).key # move the leftmost child
                 self._removeitem(cur,cur.right,cur.key)
             
         else:
@@ -127,7 +127,7 @@ class BinaryTree:
         else:
             return self._most_left(cur.left)
             
-    # when has both child, remove and move the leftmost child
+    # when has both child, remove the leftmost child
     def _removeitem(self,parent,cur,item):
         if cur.key==item:
             if parent.left==cur:
