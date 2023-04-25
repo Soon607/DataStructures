@@ -34,7 +34,8 @@ class SinglyLinkedList:
     # appending at the end of list
     def pushback(self,key):
         new_node=Node(key)
-        if self.size==0: # when linkedlist is empty
+        if self.size==0:# when linkedlist is empty
+            new_node.next=self.head
             self.head=new_node # new_node become head_node
         else:
             tail=self.head  # to find tail node
