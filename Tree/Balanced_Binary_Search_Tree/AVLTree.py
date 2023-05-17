@@ -67,7 +67,7 @@ class AVLTree:
             cur=self.right_rotate(cur)
         elif balance<-1 and val>cur.right.val: #right-right
             cur=self.left_rotate(cur)
-        elif balance<-1 and val<cur.right<val: #right-left
+        elif balance<-1 and val<cur.right.val: #right-left
             cur.right=self.right_rotate(cur.right)
             cur=self.left_rotate(cur)
         return cur
@@ -121,20 +121,20 @@ class AVLTree:
                  self._delete_node(cur, pre_val)
                  cur.right.val = pre_val
                  cur.right.height = 1 + \
-                     max(self._get_height(cur.right.left),
-                        self._get_height(cur.right.right))
+                     max(self.get_height(cur.right.left),
+                        self.get_height(cur.right.right))
             elif cur.right.left or cur.right.right:
                 if cur.right.left:
                     cur.right = cur.right.left
                 elif cur.right.right:
                     cur.right = cur.right.right
                 cur.right.height = 1 + \
-                    max(self._get_height(cur.right.left),
-                        self._get_height(cur.right.right))
+                    max(self.get_height(cur.right.left),
+                        self.get_height(cur.right.right))
             else:
                 cur.right = None
-            cur.height = 1 + max(self._get_height(cur.left),
-                                 self._get_height(cur.right))
+            cur.height = 1 + max(self.get_height(cur.left),
+                                 self.get_height(cur.right))
             
         elif cur.val>val:
             cur.left=self.delete_node(cur.left,val)
@@ -181,4 +181,9 @@ avl.insert(4)
 avl.insert(25)
 avl.insert(40)
 print(f'root balance: {avl.get_balance(avl.root)}, path: {avl.traverse()}')
-        
+avl.insert(27)
+print(f'root balance: {avl.get_balance(avl.root)}, path: {avl.traverse()}')
+avl.insert(28)
+print(f'root balance: {avl.get_balance(avl.root)}, path: {avl.traverse()}')
+avl.delete(7)
+print(f'root balance: {avl.get_balance(avl.root)}, path: {avl.traverse()}')
